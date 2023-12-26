@@ -432,5 +432,15 @@ namespace EllipticCurvesLibrary
             }
         }
     }
+
+    std::ostream& operator << (std::ostream& os, const EllipticCurve& curve)
+    {
+        std::string outputA = "A: " + curve.a.get_str() + "\n";
+        std::string outputB = "B: " + curve.b.get_str() + "\n";
+        std::string outputP = "P: " + curve.p.get_str() + "\n";
+        std::string outputString = outputA + outputB + outputP;
+        std::cout << outputString;
+        return std::cout;
+    }
 }
 
