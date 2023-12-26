@@ -316,7 +316,6 @@ namespace EllipticCurvesLibrary
         else
         {
             mpz_urandomm(g.get_mpz_t(), state, p.get_mpz_t());
-            g = 823; ///
             while (mpz_legendre(g.get_mpz_t(), p.get_mpz_t()) != -1)
             {
                 mpz_urandomm(g.get_mpz_t(), state, p.get_mpz_t());
@@ -342,8 +341,6 @@ namespace EllipticCurvesLibrary
             while (true)
             {
                 mpz_urandomm(x.get_mpz_t(), state, mpz_class(p-1).get_mpz_t());
-
-                x = 400; /// 
                 mpz_class tmp = x * x * x + x * a + b;
                 sigma = mpz_legendre(tmp.get_mpz_t(), p.get_mpz_t());
 
@@ -359,7 +356,7 @@ namespace EllipticCurvesLibrary
                     mpz_class tmp1 = x * x * x + x * E.getA() + E.getB();
                     tmp1 = moduleTransform(tmp1, p);
                     mpz_class yForP = squareModule(p, tmp1);
-                    Point P(x, 307, 0);
+                    Point P(x, yForP, 0);
 
                     std::vector<mpz_class> S;
                     std::set<mpz_class> A;
