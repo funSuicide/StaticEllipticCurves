@@ -2,6 +2,8 @@
 
 namespace EllipticCurvesLibrary
 {
+   
+
     Point::Point(mpz_class x, mpz_class y, bool i)
     {
         this->x = x;
@@ -34,6 +36,19 @@ namespace EllipticCurvesLibrary
 
     bool Point::operator==(const Point point) const
     {
-        return (x == point.getX() && i == point.onInfinity());
+        return (x == point.x && i == point.i);
     }
+
+    std::ostream& operator << (std::ostream& os, const Point& point)
+    {
+        std::string infinity = "normal";
+        if (point.onInfinity())
+        {
+            infinity = "inf";
+        }
+        std::string outputString = "(" + point.x.get_str() + ", " + point.y.get_str() + ", " + infinity + ")";
+        std::cout << outputString;
+        return std::cout;
+    }
+
 }

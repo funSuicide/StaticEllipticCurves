@@ -3,6 +3,7 @@
 #pragma warning( disable : 4146 )
 #pragma warning( disable : 4244 )
 #include <gmpxx.h>
+#include <iostream> 
 
 namespace EllipticCurvesLibrary
 {
@@ -18,5 +19,12 @@ namespace EllipticCurvesLibrary
         bool onInfinity() const;
         Point operator=(Point p);
         bool operator==(const Point point) const;
+       
+        
+        friend std::ostream& operator << (std::ostream& os, const Point& point);
+      
     };
+
+   
+
 }
