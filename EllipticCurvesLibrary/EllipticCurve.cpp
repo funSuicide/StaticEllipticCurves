@@ -39,13 +39,8 @@ std::vector<mpz_class> EEA(mpz_class a, mpz_class b)
 mpz_class reverseValue(mpz_class value, mpz_class p)
 {
     std::vector<mpz_class> resultsEEA = EEA(value, p);
-
     mpz_class gcd = resultsEEA[0];
     mpz_class x = resultsEEA[1];
-    if (gcd != 1)
-    {
-        // exept
-    }
     return moduleTransform(x, p);
 }
 
@@ -118,7 +113,7 @@ mpz_class squareModule(mpz_class p, mpz_class a)
 
 std::vector<int> ternaryDecomposition(mpz_class& n)
 {
-    int k = mpz_sizeinbase(n.get_mpz_t(), 2);
+    size_t k = mpz_sizeinbase(n.get_mpz_t(), 2);
     std::vector<int> resultDecomposition(k+1);
     mpz_class bit;
     int count = 0;
@@ -228,7 +223,7 @@ namespace EllipticCurvesLibrary
     Point EllipticCurve::doubleAndAdd(const Point point, mpz_class n) const {
         Point T = point;
         mpz_class bit;
-        int sizeN = mpz_sizeinbase(n.get_mpz_t(), 2);
+        size_t sizeN = mpz_sizeinbase(n.get_mpz_t(), 2);
         Point Q(0, 0, 1);
         for (int i = 0; i < sizeN; ++i)
         {
@@ -438,7 +433,12 @@ namespace EllipticCurvesLibrary
         std::string outputA = "A: " + curve.a.get_str() + "\n";
         std::string outputB = "B: " + curve.b.get_str() + "\n";
         std::string outputP = "P: " + curve.p.get_str() + "\n";
-        std::string outputString = outputA + outputB + outputP;
+        std::string statusP = "Status p: p is prime";
+        if (!__gmpz_probab_prime_p(curve.p.get_mpz_t(), 10))
+        {
+            statusP = "Status p: p is not a prime";
+        }
+        std::string outputString = outputA + outputB + outputP + statusP;
         std::cout << outputString;
         return std::cout;
     }
