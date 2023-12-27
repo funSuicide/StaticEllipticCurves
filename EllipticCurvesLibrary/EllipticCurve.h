@@ -17,10 +17,10 @@ namespace EllipticCurvesLibrary
         Point ternaryMethod(const Point point, mpz_class n) const;
         Point searchPoint() const;
         bool checkPoint(Point& point) const;
-        mpz_class curveCount() const;
+        mpz_class curveOrder() const;
         mpz_class getA() const;
         mpz_class getB() const;
 
-        friend std::ostream& operator << (std::ostream& os, const EllipticCurve& curve);
+        friend std::ostream& operator << (std::ostream& os, const EllipticCurve& );
     };
 }

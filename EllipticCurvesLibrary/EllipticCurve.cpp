@@ -152,7 +152,7 @@ mpz_class getNativeSum(const mpz_class& a, const mpz_class&b, const mpz_class& p
     mpz_class sum = 0;
     for (mpz_class x = 0; x < p; ++x)
     {
-        mpz_class tmp = x * x * x + x * x * a + b;
+        mpz_class tmp = x * x * x + x * a + b;
         sum += mpz_legendre(tmp.get_mpz_t(), p.get_mpz_t());
     }
     return sum;
@@ -296,7 +296,7 @@ namespace EllipticCurvesLibrary
         return this->b;
     }
 
-    mpz_class EllipticCurve::curveCount() const
+    mpz_class EllipticCurve::curveOrder() const
     {
         gmp_randstate_t state;
         mpz_class g;

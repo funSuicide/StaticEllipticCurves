@@ -2,8 +2,6 @@
 
 namespace EllipticCurvesLibrary
 {
-   
-
     Point::Point(mpz_class x, mpz_class y, bool i)
     {
         this->x = x;
@@ -50,5 +48,4 @@ namespace EllipticCurvesLibrary
         std::cout << outputString;
         return std::cout;
     }
-
 }
