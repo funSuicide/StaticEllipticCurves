@@ -20,6 +20,8 @@ namespace EllipticCurvesLibrary
         mpz_class curveOrder() const;
         mpz_class getA() const;
         mpz_class getB() const;
+        mpz_class discriminant() const;
+        bool checkSingularity() const;
 
         friend std::ostream& operator << (std::ostream& os, const EllipticCurve& );
     };

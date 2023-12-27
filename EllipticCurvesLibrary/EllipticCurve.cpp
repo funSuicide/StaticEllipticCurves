@@ -47,8 +47,8 @@ mpz_class reverseValue(mpz_class value, mpz_class p)
 std::pair<mpz_class, mpz_class> getTAndS(mpz_class value)
 {
     mpz_class copyValue(value);
-    mpz_class s(0);
-    mpz_class t(0);
+    mpz_class s = 0;
+    mpz_class t = 0;
 
     while (copyValue % 2 == 0)
     {
@@ -87,10 +87,10 @@ mpz_class squareModule(mpz_class p, mpz_class a)
     {
         mpz_class tmp;
         __gmpz_powm(tmp.get_mpz_t(), D.get_mpz_t(), m.get_mpz_t(), p.get_mpz_t());
-        tmp = A * tmp;//moduleTransform(A * D, p);
+        tmp = A * tmp;
 
         mpz_class tmp2;
-        mpz_class tmp3 = tAndS.second - 1 - i; //first -> second
+        mpz_class tmp3 = tAndS.second - 1 - i; 
         __gmpz_powm(tmp2.get_mpz_t(), mpz_class(2).get_mpz_t(), tmp3.get_mpz_t(), p.get_mpz_t());
         __gmpz_powm(tmp.get_mpz_t(), tmp.get_mpz_t(), tmp2.get_mpz_t(), p.get_mpz_t());
         if (tmp == moduleTransform(-1, p))
@@ -105,7 +105,7 @@ mpz_class squareModule(mpz_class p, mpz_class a)
     mpz_class tmp4S = moduleTransform((tAndS.first + 1) * reverseValue(2, p), p);
     __gmpz_powm(tmp4.get_mpz_t(), a.get_mpz_t(), tmp4S.get_mpz_t(), p.get_mpz_t());
     mpz_class tmp5;
-    mpz_class tmp5S = moduleTransform(m * reverseValue(2, p), p); // m / 2;
+    mpz_class tmp5S = moduleTransform(m * reverseValue(2, p), p); 
     __gmpz_powm(tmp5.get_mpz_t(), D.get_mpz_t(), tmp5S.get_mpz_t(), p.get_mpz_t());
     mpz_class x = moduleTransform(tmp4 * tmp5, p);
     return x;
@@ -157,9 +157,6 @@ mpz_class getNativeSum(const mpz_class& a, const mpz_class&b, const mpz_class& p
     }
     return sum;
 }
-
-
-
 
 namespace EllipticCurvesLibrary
 {
@@ -305,9 +302,9 @@ namespace EllipticCurvesLibrary
         gmp_randinit_mt(state);
         gmp_randseed(state, seed.get_mpz_t());
 
-        mpz_class W; // параметр для гигантских шагов
+        mpz_class W; 
         mpz_class c;
-        mpz_class d; //параметры искажения
+        mpz_class d;
 
         if (p <= 229)
         {
@@ -364,24 +361,20 @@ namespace EllipticCurvesLibrary
                     std::vector<mpz_class> tmpA;
                     std::vector<mpz_class> tmpB;
 
-                    //std::cout << "List A: " << std::endl;
                     for (mpz_class beta = 0; beta <= W-1; ++beta)
                     {
                         mpz_class tmp = (p + 1 + beta);
                         Point setElement = E.doubleAndAdd(P, tmp);
                         mpz_class tmpElement = setElement.getX();
-                       // std::cout << tmpElement.get_str() << std::endl;
                         A.insert(tmpElement);
                         tmpA.push_back(tmpElement);
                     }
 
-                   // std::cout << "List B: " << std::endl;
                     for (mpz_class y = 0; y <= W; ++y)
                     {
                         mpz_class tmp = y * W;
                         Point setElement = E.doubleAndAdd(P, tmp);
                         mpz_class tmpElement = setElement.getX();
-                       // std::cout << tmpElement.get_str() << std::endl;
                         B.insert(tmpElement);
                         tmpB.push_back(tmpElement);
                     }
@@ -425,17 +418,32 @@ namespace EllipticCurvesLibrary
         }
     }
 
+    mpz_class EllipticCurve::discriminant() const
+    {
+        return moduleTransform((4*a*a*a+27*b*b), p);
+    }
+
+    bool EllipticCurve::checkSingularity() const
+    {
+        return discriminant() == 0;
+    }
+
     std::ostream& operator << (std::ostream& os, const EllipticCurve& curve)
     {
         std::string outputA = "A: " + curve.a.get_str() + "\n";
         std::string outputB = "B: " + curve.b.get_str() + "\n";
         std::string outputP = "P: " + curve.p.get_str() + "\n";
-        std::string statusP = "Status p: p is prime";
+        std::string statusP = "Status p: p is prime\n";
+        std::string statusSingularity = "Singularity: no";
         if (!__gmpz_probab_prime_p(curve.p.get_mpz_t(), 10))
         {
             statusP = "Status p: p is not a prime";
         }
-        std::string outputString = outputA + outputB + outputP + statusP;
+        if (curve.checkSingularity())
+        {
+            statusSingularity = "Singularity: yes";
+        }
+        std::string outputString = outputA + outputB + outputP + statusP + statusSingularity;
         std::cout << outputString;
         return std::cout;
     }
